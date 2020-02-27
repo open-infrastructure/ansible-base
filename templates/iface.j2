@@ -1,0 +1,18 @@
+{{ ansible_managed|comment(decoration="# ") }}
+
+{% if interface.description %}
+# {{ interface.description }}
+{% endif %}
+{% for class in interface.classes|default(base__default_interface_classes) %}
+{%   if class=='auto' %}
+auto {{ interface.name }}
+{%   else %}
+allow-{{ class }} {{ interface.name }}
+{%   endif %}
+{% endfor %}
+{% for inet_class in interface.inet_classes|default([base__default_interface_inet_classes]) %}
+iface {{ interface.name }} {{ inet_class.name }} {{ inet_class.method }}
+{%   for option in inet_class.options|default({}) %}
+    {{ option.name }} {{ option.value }}
+{%   endfor %}
+{% endfor %}

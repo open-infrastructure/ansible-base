@@ -1,0 +1,109 @@
+---
+
+- name: Configure hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+- name: Generate locales
+  locale_gen:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ base__locales }}"
+
+- name: Place language choice
+  copy:
+    owner: root
+    group: root
+    mode: 0644
+    content: "export LANG={{ base__lang }}"
+    dest: /etc/profile.d/lang.sh
+
+- name: Configure additional system groups
+  group:
+    name: "{{ item.name }}"
+    state: "{{ item.state|default('present') }}"
+  loop: "{{ base__system_groups }}"
+  loop_control: {label: "{{ item.name }}"}
+
+- name: Configure additional users
+  user:
+    name: "{{ user.name }}"
+    home: "{{ base__home_dir }}/{{ user.name }}"
+    group: "{{ user.group|default('omit') }}"
+    groups: "{{ user.groups|default('omit') }}"
+    password: "{{ user.password|default('omit') }}"
+    shell: "{{ user.shell|password_hash('sha512')|default('omit') }}"
+  loop: "{{ base__system_users }}"
+  loop_control:
+    label: "{{ user.name }}"
+    loop_var: user
+
+- name: Ensure .ssh dir exists
+  vars:
+    path: "{{ base__home_dir }}/{{ user.name }}"
+  file:
+    owner: "{{ user.name }}"
+    group: "{{ user.group|default(omit) }}"
+    mode: 0750
+    path: "{{ path }}"
+    state: directory
+  loop: "{{ base__system_users }}"
+  loop_control:
+    label: "{{ path }}"
+    loop_var: user
+
+- name: Place authorized SSH keys
+  template:
+    owner: "{{ user.name }}"
+    group: "{{ user.group|default(omit) }}"
+    mode: 0540
+    src: authorized_keys.j2
+    dest: "{{ base__home_dir }}/{{ user.name }}"
+  loop: "{{ base__system_users }}"
+  loop_control:
+    label: "{{ path }}"
+    loop_var: user
+
+- name: Place /etc/network/interfaces
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: interfaces.j2
+    dest: /etc/network/interfaces
+  when: base__configure_interfaces
+  notify: ['reload interface config']
+
+- name: Ensure /etc/network/interfaces.d/ exists
+  file:
+    owner: root
+    group: root
+    mode: 0751
+    path: /etc/network/interfaces.d
+    state: directory
+  when: base__configure_interfaces
+  notify: ['reload interface config']
+
+- name: Ensure /etc/network/interfaces.d/50-cloud-init.cfg does not exist
+  file:
+    path: /etc/network/interfaces.d/50-cloud-init.cfg
+    state: absent
+
+- name: Place interface configuration files
+  template:
+    owner: root
+    group: root
+    mode: 0644
+    src: iface.j2
+    dest: "/etc/network/interfaces.d/{{ interface.name }}.conf"
+  loop: "{{ base__interfaces }}"
+  loop_control: {loop_var: interface, label: "{{ interface.name }}"}
+  when: base__configure_interfaces
+  notify: ['reload interface config']
+
+- name: Place sysctl.conf
+  template:
+    owner: root
+    group: root
+    src: sysctl.conf.j2
+    dest: /etc/sysctl.conf

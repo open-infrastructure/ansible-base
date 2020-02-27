@@ -1,0 +1,6 @@
+---
+
+- name: Install basic packages
+  package:
+    name: "{{ base__system_packages }}"
+    state: present
