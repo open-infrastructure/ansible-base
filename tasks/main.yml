@@ -14,8 +14,3 @@
   import_tasks: install.yml
   become: true
   tags: [base]
-
-- name: Configure basic stuff
-  import_tasks: configure.yml
-  become: true
-  tags: [base]

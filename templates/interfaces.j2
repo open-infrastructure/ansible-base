@@ -1,9 +1,0 @@
-{{ ansible_managed|comment(decoration="# ") }}
-# interfaces(5) file used by ifup(8) and ifdown(8)
-
-#  loopback network interface
-auto lo
-iface lo inet loopback
-
-# Include files from /etc/network/interfaces.d:
-source /etc/network/interfaces.d/*.conf

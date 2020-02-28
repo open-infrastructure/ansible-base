@@ -1,5 +1,0 @@
-{{ ansible_managed|comment(decoration="# ") }}
-
-{% for public_key in user.ssh_authorized_keys|default([]) %}
-{{ public_key }}
-{% endfor %}
