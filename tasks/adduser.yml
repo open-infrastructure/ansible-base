@@ -1,0 +1,45 @@
+---
+
+- name: Ensure 'ansibleusers' group exists
+  group:
+    name: ansibleusers
+    state: present
+
+- name: Allow 'ansibleusers' group to have passwordless sudo
+  copy:
+    src: files/10-ansibleusers
+    dest: /etc/sudoers.d/10-ansibleusers
+    mode: '660'
+
+- name: Ensure root user has a password...
+  user:
+    name: root
+    shell: /bin/bash
+    password: "foobar1234!@#$"
+    update_password: always
+    groups:
+      - sudo
+      - root
+    state: present
+
+- name: Create a generic ansible user
+  user:
+    name: ansible
+    shell: /bin/bash
+    password: "foobar1234!@#$"
+    update_password: on_create
+    groups:
+      - sudo
+      - ansibleusers
+    state: present
+
+- name: Display all .public keys that are going to be installed
+  debug: msg={{ lookup('fileglob', 'public_keys/*.pub') }}
+
+- name: Add SSH-Keys to ansible user
+  authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', item) }}"
+  with_fileglob:
+    - "public_keys/*.pub"

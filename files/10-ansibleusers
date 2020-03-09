@@ -1,0 +1,2 @@
+# Allow ansibleusers for nopassword
+%ansibleusers ALL=(ALL) NOPASSWD:ALL

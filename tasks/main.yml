@@ -14,3 +14,8 @@
   import_tasks: install.yml
   become: true
   tags: [base]
+
+- name: Add ansible user
+  import_tasks: adduser.yml
+  become: true
+  tags: [sshd]
