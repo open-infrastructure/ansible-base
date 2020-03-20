@@ -1,0 +1,19 @@
+- name: Enable Firewall
+  ufw:
+    state: enabled
+    default: deny
+    logging: 'on'
+
+- name: Allow SSH
+  ufw:
+    rule: allow
+    port: ssh
+    proto: tcp
+
+- name: Ratelimit SSH
+  ufw:
+    rule: limit
+    port: ssh
+    proto: tcp
+
+

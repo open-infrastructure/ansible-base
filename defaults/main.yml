@@ -1,7 +1,7 @@
 ---
 
 base__supported_os_families: [debian]
-base__system_packages: []
+base__system_packages: [ufw]
 base__locales:
   - 'en_US.UTF-8'
   - 'de_DE.UTF-8'

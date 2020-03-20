@@ -4,18 +4,18 @@
   assert:
     that: "ansible_os_family|lower in base__supported_os_families"
     msg: "{{ ansible_os_family }} is probably not supported by this role"
-  tags: [base]
 
 - name: Include os specific variables
   include_vars: "{{ ansible_os_family|lower }}.yml"
-  tags: [base]
 
 - name: Install dependencies required by this role
   import_tasks: install.yml
   become: true
-  tags: [base]
 
 - name: Add ansible user
   import_tasks: adduser.yml
   become: true
-  tags: [sshd]
+
+- name: Apply ufw firewall rule to allow SSH
+  import_tasks: firewall.yml
+  become: true
