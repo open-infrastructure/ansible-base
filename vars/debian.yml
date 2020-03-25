@@ -19,3 +19,7 @@ base__system_packages:
   - python3-pip
   - python3-virtualenv
   - graphviz
+  - sudo
+  - ufw
+  - iperf3
+  - htop

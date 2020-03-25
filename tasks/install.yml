@@ -4,6 +4,14 @@
   apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
 
 - name: Install basic packages
-  package:
-    name: "{{ base__system_packages }}"
+  debug:
+    msg: "{{ item }}"
+  with_items:
+    "{{ base__system_packages }}"
+
+- name: Install basic packages
+  apt:
+    name: "{{ item }}"
     state: present
+  with_items:
+    "{{ base__system_packages }}"
