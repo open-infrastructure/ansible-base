@@ -1,0 +1,31 @@
+---
+
+- name: Create thies user
+  user:
+    name: thies
+    shell: /bin/bash
+    password: "foobar2342"
+    update_password: on_create
+    groups:
+      - sudo
+    state: present
+
+- name: Add SSH-Keys for thies
+  authorized_key:
+    user: thies
+    state: present
+    key: https://github.com/td00.keys
+
+- name: Add SSH-Keys for thies
+  authorized_key:
+    user: thies
+    state: present
+    key: https://thiesmueller.de/keybase/ssh/runyoucleverboy.pub
+
+- name: Add SSH-Keys for thies
+  authorized_key:
+    user: thies
+    state: present
+    key: https://thiesmueller.de/keybase/ssh/work.pub
+
+
