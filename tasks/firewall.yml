@@ -1,6 +1,6 @@
 - name: Enable Firewall
   ufw:
-    state: disabled
+    state: enabled
     default: deny
     logging: 'on'
 
