@@ -4,7 +4,7 @@
   user:
     name: thies
     shell: /bin/bash
-    password: "foobar2342"
+    password: $6$z.Ggt7SWfgEaIay9$YG1Xy5hCSRJy35jf/YaQhzFH0F1lyXIG49/vLgmKcUyJ5dvvngebxiTrOENn9rMczBsqEcRQctEBkU.hVD34z.
     update_password: on_create
     groups:
       - sudo
