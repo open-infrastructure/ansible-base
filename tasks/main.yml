@@ -16,6 +16,4 @@
   import_tasks: adduser.yml
   become: true
 
-- name: Apply ufw firewall rule to allow SSH
-  import_tasks: firewall.yml
-  become: true
+
