@@ -1,18 +1,19 @@
 ---
 
-- name: Ensure 'sudo' group exists
-  group:
-    name: sudo
+- name: create users
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell }}"
+    password: "{{ item.password }}"
+    groups: "{{ item.groups }}"
+    update_password: always
     state: present
+  loop: "{{ users }}"
 
-- name: Add root
-  import_tasks: users/root.yml
-
-
-- name: Add thies
-  import_tasks: users/thies.yml
-
-- name: Add cedi
-  import_tasks: users/cedi.yml
-
+- name: Add SSH public keys
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.public_keys }}"
+    state: present
+  loop: "{{ users }}"
 

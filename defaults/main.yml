@@ -1,31 +1,53 @@
 ---
 
-base__supported_os_families: [debian]
-base__system_packages: []
-base__locales:
-  - 'en_US.UTF-8'
-  - 'de_DE.UTF-8'
-base__lang: 'en_US.UTF8'
-base__home_dir: "/home"
-base__system_groups: []
-# available fields are
-# - name: required
-base__system_users: []
-# available fields are
-# - name: required
-#   password: optional
-#   shell: optional
-#   group: optional
-#   groups: optional
-#   ssh_authorized_keys: optional
-base__interfaces: []
-base__default_interface_classes: ['auto']
-base__configure_interfaces: false
+users: []
+#  - name: cedi
+#    shell: /bin/zsh
+#    password:
+#    groups:
+#      - sudo
+#      - docker
+#    public_keys: https://github.com/cedi.keys
 
-# sysctl.conf
-base__sysctl_kernel_domainname: "{{ '.'.join(inventory_hostname.split('.')[1:]) }}"
-base__sysctl_net_ipv4_conf_default_rp_filter: 1
-base__sysctl_net_ipv4_conf_all_rp_filter: 1
-base__sysctl_net_ipv4_forward: 0
-base__sysctl_net_ipv6_all_forwarding: 0
+base_system_packages:
+  - tmux
+  - zsh
+  - mosh
+  - socat
+  - rsync
+  - curl
+  - wget
+  - tree
+  - tcpdump
+  - dnsutils
+  - nmap
+  - git
+  - python3
+  - python3-apt
+  - python3-pip
+  - python3-virtualenv
+  - python2
+  - python-pip
+  - graphviz
+  - sudo
+  - ufw
+  - iperf3
+  - htop
+  - ansible
+  - cargo
+  - apt-transport-https
+  - ca-certificates
+  - gnupg-agent
+  - software-properties-common
+  - tilix
 
+base_cargo_packages: []
+#  - exa
+
+base_pip_packages: []
+#  - neovim-remote
+#  - awscli
+#  - docker
+
+base_pip2_packages: []
+#  - docker-py
