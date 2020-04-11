@@ -1,6 +1,10 @@
 ---
 
-users: []
+base_system_groups:
+  - sudo
+  - docker
+
+base_system_users: []
 #  - name: cedi
 #    shell: /bin/zsh
 #    password:

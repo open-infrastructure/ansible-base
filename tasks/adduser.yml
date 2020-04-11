@@ -1,5 +1,11 @@
 ---
 
+- name: create groups
+  group:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ base_system_groups }}"
+
 - name: create users
   user:
     name: "{{ item.name }}"
@@ -8,12 +14,12 @@
     groups: "{{ item.groups }}"
     update_password: always
     state: present
-  loop: "{{ users }}"
+  loop: "{{ base_system_users }}"
 
 - name: Add SSH public keys
   authorized_key:
     user: "{{ item.name }}"
     key: "{{ item.public_keys }}"
     state: present
-  loop: "{{ users }}"
+  loop: "{{ base_system_users }}"
 
