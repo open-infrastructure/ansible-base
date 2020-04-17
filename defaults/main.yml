@@ -44,6 +44,7 @@ base_system_packages:
   - gnupg-agent
   - software-properties-common
   - tilix
+  - snap
 
 base_cargo_packages: []
 #  - exa
@@ -55,3 +56,6 @@ base_pip_packages: []
 
 base_pip2_packages: []
 #  - docker-py
+
+base_snap_packages: []
+#  - mailspring
