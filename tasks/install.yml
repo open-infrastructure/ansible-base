@@ -42,6 +42,15 @@
 - name: Install cargo packages
   become: true
   shell:
-    cmd: sudo cargo install "{{ item }}" --root /usr/local/bin/
+    cmd: cargo install "{{ item }}" --root /usr/local/bin/
   loop: "{{ base_cargo_packages }}"
 
+- name: Install snap packages
+  debug:
+    msg: "{{ base_snap_packages }}"
+
+- name: Install snap packages
+  become: true
+  snap:
+    name: "{{ base_snap_packages }}"
+    state: present
